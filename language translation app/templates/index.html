@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>English → Tamil Translation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="card">
+    <h2 class="title">English → Tamil Translation</h2>
+
+    <form method="POST">
+
+        <!-- Upload placeholder row -->
+        <div class="input-row">
+            <label class="input-label">Upload</label>
+            <input type="text" class="input-box" placeholder="Upload option (disabled)" disabled>
+        </div>
+
+        <!-- English text -->
+        <div class="input-row">
+            <label class="input-label">Text Content</label>
+            <textarea name="english_text" class="input-box textarea"
+                      placeholder="Enter English text...">{{ request.form.get('english_text','') }}</textarea>
+        </div>
+
+        <!-- Engine selection -->
+        <div class="input-row">
+            <label class="input-label">Engine</label>
+            <select name="engine" class="input-box select-box">
+                <option value="deep_translator"
+                    {% if selected_engine=='deep_translator' %}selected{% endif %}>
+                    Deep Translator (recommended)
+                </option>
+                <option value="googletrans"
+                    {% if selected_engine=='googletrans' %}selected{% endif %}>
+                    googletrans
+                </option>
+                <option value="tamil_transliteration"
+                    {% if selected_engine=='tamil_transliteration' %}selected{% endif %}>
+                    Tamil Transliteration (phonetic)
+                </option>
+            </select>
+        </div>
+
+        <!-- Translate Button -->
+        <button type="submit" class="btn">Translate</button>
+    </form>
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <h3 class="result-title">Translation Result</h3>
+    <div class="result-box">{{ translated_text }}</div>
+
+</div>
+
+
+<script>
+// Optional JS – little animation
+document.querySelectorAll(".input-box").forEach(x=>{
+    x.addEventListener("focus",()=>x.classList.add("focus"));
+    x.addEventListener("blur",()=>x.classList.remove("focus"));
+});
+</script>
+
+</body>
+</html>
